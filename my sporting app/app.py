@@ -1,35 +1,31 @@
 import streamlit as st
 import time
 
-# ১. পেজ সেটআপ
-st.set_page_config(page_title="Partho's Code Animation", layout="wide")
+# ১. টাইটেল
+st.title("Partho's Live Project 🏏")
 
-st.title("🏏 Partho's Interactive Cricket Dashboard")
-
-# ২. সেশন স্টেট (স্কোর সেভ করার জন্য)
+# ২. স্কোরবোর্ড
 if 'score' not in st.session_state:
     st.session_state.score = 0
 
-# ৩. লেআউট তৈরি
-col1, col2 = st.columns([1, 1])
+col1, col2 = st.columns(2)
 
 with col1:
-    st.header("📊 Live Stats")
-    st.metric("Total Score", f"{st.session_state.score}")
-    if st.button('রান নিন (Add Run)'):
+    st.header("Scoreboard")
+    st.metric("Total Runs", st.session_state.score)
+    if st.button('Add Run'):
         st.session_state.score += 1
 
 with col2:
-    st.header("🎨 Live Animation")
-    # এখানে আমরা কোনো ভিডিও লিঙ্ক দিচ্ছি না, সরাসরি কোড দিয়ে প্রগ্রেস বার এনিমেশন করছি
-    progress_bar = st.progress(0)
-    status_text = st.empty()
-
-    # এই লুপটি এনিমেশনের মতো কাজ করবে
-    for percent_complete in range(100):
-        time.sleep(0.01)
-        progress_bar.progress(percent_complete + 1)
+    st.header("Match Status")
+    # এটি ভিডিও নয়, এটি একটি পাইথন এনিমেশন যা তোমার ব্রাউজারে তৈরি হবে
+    with st.spinner('বোলার বল করছে...'):
+        time.sleep(1)
     
-    st.success("এনিমেশন সাকসেসফুল!")
-    # একটি ছোট মজার সারপ্রাইজ
-    st.balloons()
+    # রান হলে ম্যাজিক দেখাবে
+    if st.session_state.score > 0:
+        st.balloons()
+        st.success("অসাধারণ শট! বেলুন উড়ছে দেখো!")
+
+# ৩. একটি ছোট এনিমেশন বক্স
+st.info("পার্থ, এই বেলুনগুলোই এখন আমাদের এনিমেশন। এটি সরাসরি পাইথন দিয়ে চলছে।")

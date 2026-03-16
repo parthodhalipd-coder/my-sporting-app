@@ -6,7 +6,7 @@ st.set_page_config(page_title="Partho's Live Pro", layout="wide")
 # ২. নাম (Partho) দিয়ে ডিজাইন
 st.markdown("<h1 style='text-align: center; color: #00FFCC;'>🚀 Partho's Live Sports Portal</h1>", unsafe_allow_html=True)
 
-# ৩. সাইডবার সেটিংস
+# ৩. সাইডবার সেটিংসhttps://www.youtube.com/watch?v=1eNeorRU6NY&pp=ygULdHNwb3J0IGxpdmU%3D
 st.sidebar.title("Developer: Partho")
 st.sidebar.markdown(f"**স্ট্যাটাস:** 🟢 অনলাইন")
 st.sidebar.divider()

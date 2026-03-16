@@ -3,64 +3,58 @@ import time
 import random
 
 # ১. পেজ সেটিংস
-st.set_page_config(page_title="Partho's Live Cricket", layout="wide")
+st.set_page_config(page_title="Partho's Live Animation", layout="wide")
 
-# ২. টাইটেল ডিজাইন
 st.markdown("<h1 style='text-align: center; color: #00FFCC;'>🏏 Partho's Live Cricket Animation</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #white;'>Developer: Partho</p>", unsafe_allow_html=True)
 
-# ৩. এনিমেশন সোর্স (এগুলো সরাসরি কাজ করবে)
+# ২. এনিমেশন সোর্স (এগুলো স্থায়ী লিঙ্ক)
 animations = {
-    "four": "https://media.giphy.com/media/l0HlU9asclnE2bCDe/giphy.gif",
-    "six": "https://media.giphy.com/media/l0HlO4y4YfFq9z8uA/giphy.gif",
-    "out": "https://media.giphy.com/media/3o7TKMGpxx6B8XgKqA/giphy.gif",
-    "waiting": "https://media.giphy.com/media/3o7TKz9H0D8oG5eXUo/giphy.gif"
+    "four": "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/l0HlU9asclnE2bCDe/giphy.webp",
+    "six": "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/l0HlO4y4YfFq9z8uA/giphy.webp",
+    "out": "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/3o7TKMGpxx6B8XgKqA/giphy.webp",
+    "waiting": "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/3o7TKz9H0D8oG5eXUo/giphy.webp"
 }
 
-# ৪. লেআউট তৈরি
+# ৩. লেআউট
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st.subheader("📊 Live Scoreboard")
-    score_val = st.empty()
-    status_text = st.empty()
+    st.subheader("📊 Live Score")
+    score_display = st.empty()
+    status_msg = st.empty()
 
 with col2:
-    st.subheader("📺 Match View")
-    anim_placeholder = st.empty()
+    st.subheader("📺 Match Animation")
+    video_display = st.empty()
 
-# ৫. সেশন স্টেট (স্কোর ধরে রাখার জন্য)
+# ৪. স্কোর কন্ট্রোল
 if 'runs' not in st.session_state:
     st.session_state.runs = 0
 if 'wickets' not in st.session_state:
     st.session_state.wickets = 0
 
-# ৬. মেইন রানার (বাটন ছাড়াই চলবে)
-# এটি লুপের মাধ্যমে ৫ সেকেন্ড পর পর স্ক্রিন আপডেট করবে
-def start_stream():
-    event = random.choice(["0", "1", "2", "4", "6", "W"])
-    
-    if event == "W":
-        st.session_state.wickets += 1
-        status_text.error("🔴 OUT! উইকেট পড়ে গেল!")
-        anim_placeholder.image(animations["out"], use_container_width=True)
-    elif event == "4":
-        st.session_state.runs += 4
-        status_text.success("🔥 boundary! চার রান!")
-        anim_placeholder.image(animations["four"], use_container_width=True)
-    elif event == "6":
-        st.session_state.runs += 6
-        status_text.success("🚀 SIX! বিশাল ছক্কা!")
-        anim_placeholder.image(animations["six"], use_container_width=True)
-    else:
-        st.session_state.runs += int(event)
-        status_text.info("🏏 ডট বল বা সিঙ্গেল রান...")
-        anim_placeholder.image(animations["waiting"], use_container_width=True)
-    
-    score_val.metric("Score", f"{st.session_state.runs} / {st.session_state.wickets}")
+# ৫. রান করানো
+event = random.choice(["0", "1", "2", "4", "6", "W"])
 
-# ৭. অটো-রিফ্রেশ মেকানিজম
-# প্রতি ৫ সেকেন্ডে পেজটি নিজে থেকেই আপডেট হবে
-start_stream()
+if event == "W":
+    st.session_state.wickets += 1
+    status_msg.error("🔴 OUT! উইকেট পড়ে গেল!")
+    video_display.image(animations["out"], use_container_width=True)
+elif event == "4":
+    st.session_state.runs += 4
+    status_msg.success("🔥 4 Runs! দারুণ বাউন্ডারি!")
+    video_display.image(animations["four"], use_container_width=True)
+elif event == "6":
+    st.session_state.runs += 6
+    status_msg.success("🚀 6 Runs! বিশাল ছক্কা!")
+    video_display.image(animations["six"], use_container_width=True)
+else:
+    st.session_state.runs += int(event)
+    status_msg.info("🏏 খেলা চলছে...")
+    video_display.image(animations["waiting"], use_container_width=True)
+
+score_display.metric("Total Score", f"{st.session_state.runs} / {st.session_state.wickets}")
+
+# ৫ সেকেন্ড পর পর অটো-রিফ্রেশ
 time.sleep(5)
 st.rerun()

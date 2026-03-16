@@ -1,42 +1,36 @@
 import streamlit as st
-import requests
 
-# ১. বাংলাদেশের চ্যানেলের সোর্স লিঙ্ক
-IPTV_URL = "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/bd.m3u"
+# ১. অ্যাপের টাইটেল ও লেআউট
+st.set_page_config(page_title="Partho's Stream", page_icon="📺", layout="wide")
 
-def get_channels():
-    try:
-        response = requests.get(IPTV_URL)
-        lines = response.text.split('\n')
-        channels = []
-        for i in range(len(lines)):
-            if lines[i].startswith('#EXTINF'):
-                name = lines[i].split(',')[-1].strip()
-                link = lines[i+1].strip()
-                channels.append({"name": name, "url": link})
-        return channels
-    except:
-        return []
+# ২. তোমার নাম (Partho) দিয়ে ডিজাইন
+st.markdown("<h1 style='text-align: center; color: #1E90FF;'>🚀 Partho's Live App</h1>", unsafe_allow_html=True)
 
-st.set_page_config(page_title="রাহিব লাইভ টিভি", layout="wide")
-st.title("📺 রাহিবের স্পোর্টস ও লাইভ টিভি অ্যাপ")
+# ৩. সাইডবার ডিজাইন
+st.sidebar.title("Owner: Partho")
+st.sidebar.write("সাইবার সিকিউরিটি ও স্ট্রিমিং প্রজেক্ট")
 
-# ২. চ্যানেল লোড করা
-data = get_channels()
+# চ্যানেল সিলেকশন
+channel = st.sidebar.selectbox("চ্যানেল বেছে নিন", ["Live Sports", "Somoy TV", "Jamuna TV"])
 
-if data:
-    names = [c['name'] for c in data]
-    selected_channel = st.sidebar.selectbox("একটি চ্যানেল বেছে নিন", names)
-    
-    # বাছাই করা চ্যানেলের লিঙ্ক বের করা
-    url = next(item['url'] for item in data if item['name'] == selected_channel)
-    
-    st.subheader(f"🔴 বর্তমানে দেখছেন: {selected_channel}")
-    
-    # সরাসরি ভিডিও প্লেয়ার
-    st.video(url)
-    
-    # যদি ভিডিও প্লে না হয় তবে ইউআরএল দেখাবে
-    st.info(f"লিঙ্ক কাজ না করলে এখানে কপি করে অন্য প্লেয়ারে ট্রাই করুন: {url}")
-else:
-    st.error("দুঃখিত, কোনো চ্যানেল পাওয়া যায়নি!")
+# ৪. ভিডিও লিঙ্ক ও প্লেয়ার
+video_url = "https://test-streams.mux.dev/x36xhzz/url_2/1920x1080/is_0/index.m3u8"
+
+st.write(f"### বর্তমানে দেখছেন: {channel}")
+
+# এই প্লেয়ারটি Partho-র অ্যাপে ভালো কাজ করবে
+st.markdown(
+    f"""
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 10px;">
+        <iframe 
+            src="https://p.m3u8play.com/player/index.html?url={video_url}" 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("---")
+st.write("© 2026 Developed by **Partho**")

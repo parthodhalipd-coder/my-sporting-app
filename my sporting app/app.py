@@ -1,24 +1,35 @@
 import streamlit as st
 import time
 
-# ১. পেজ সেটিংস
-st.set_page_config(page_title="Partho's Success", layout="wide")
+# ১. পেজ সেটআপ
+st.set_page_config(page_title="Partho's Code Animation", layout="wide")
 
-# ২. টাইটেল
-st.markdown("<h1 style='text-align: center; color: #00FFCC;'>🚀 Partho's Final Win</h1>", unsafe_allow_html=True)
+st.title("🏏 Partho's Interactive Cricket Dashboard")
 
-# ৩. এখানে কোনো ভিডিও লিঙ্ক নেই, সরাসরি সিস্টেম অ্যানিমেশন
-st.write("### পার্থ, এবার ম্যাজিকটা দেখো!")
+# ২. সেশন স্টেট (স্কোর সেভ করার জন্য)
+if 'score' not in st.session_state:
+    st.session_state.score = 0
 
-# একটি বড় বাটন
-if st.button('ম্যাজিক বাটন চাপুন'):
-    # এটি ভিডিওর চেয়েও পাওয়ারফুল সিস্টেম অ্যানিমেশন
-    st.balloons() # স্ক্রিনে কয়েকশ বেলুন উড়বে
-    st.snow()     # তুষারপাত হবে
-    st.success("অভিনন্দন পার্থ! তোমার অ্যাপ এখন ১০০% সচল।")
+# ৩. লেআউট তৈরি
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.header("📊 Live Stats")
+    st.metric("Total Score", f"{st.session_state.score}")
+    if st.button('রান নিন (Add Run)'):
+        st.session_state.score += 1
+
+with col2:
+    st.header("🎨 Live Animation")
+    # এখানে আমরা কোনো ভিডিও লিঙ্ক দিচ্ছি না, সরাসরি কোড দিয়ে প্রগ্রেস বার এনিমেশন করছি
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+
+    # এই লুপটি এনিমেশনের মতো কাজ করবে
+    for percent_complete in range(100):
+        time.sleep(0.01)
+        progress_bar.progress(percent_complete + 1)
     
-    # এটি সরাসরি Giphy-র মূল ইমেজ যা কোনোদিন ব্লক হয় না
-    st.image("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/3o7TKz9H0D8oG5eXUo/giphy.gif", caption="Cricket is Loading...")
-
-# ৪. অটোমেটিক স্ট্যাটাস আপডেট
-st.info("ভিডিও লিঙ্কগুলো কাজ করছে না কারণ ওগুলো প্রাইভেট। তাই আমরা সিস্টেম গ্রাফিক্স ব্যবহার করছি।")
+    st.success("এনিমেশন সাকসেসফুল!")
+    # একটি ছোট মজার সারপ্রাইজ
+    st.balloons()

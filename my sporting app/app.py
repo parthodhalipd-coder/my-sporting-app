@@ -1,38 +1,49 @@
 import streamlit as st
+import time
 
-# ১. অ্যাপ সেটিংস (Partho's Pro Stream)
-st.set_page_config(page_title="Partho's Live Pro", layout="wide")
+# ১. অ্যাপ কনফিগারেশন
+st.set_page_config(page_title="Partho's Live Animation", layout="wide")
 
-# ২. নাম (Partho) দিয়ে ডিজাইন
-st.markdown("<h1 style='text-align: center; color: #00FFCC;'>🚀 Partho's Live Sports Portal</h1>", unsafe_allow_html=True)
+# ২. এনিমেশন ভিডিওর লিস্ট (এগুলো তুমি গিটহাবে আপলোড করে নাম বদলে নিতে পারো)
+# আমি এখানে কিছু স্যাম্পল GIF লিঙ্ক দিচ্ছি যা ভিডিওর মতো কাজ করবে
+animation_files = {
+    "waiting": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/3o7TKz9H0D8oG5eXUo/giphy.gif",
+    "four": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/l0HlU9asclnE2bCDe/giphy.gif",
+    "six": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/l0HlO4y4YfFq9z8uA/giphy.gif",
+    "out": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JnB0PW0mY3Q9Zw/3o7TKMGpxx6B8XgKqA/giphy.gif"
+}
 
-# ৩. সাইডবার সেটিংসhttps://www.youtube.com/watch?v=1eNeorRU6NY&pp=ygULdHNwb3J0IGxpdmU%3D
-st.sidebar.title("Developer: Partho")
-st.sidebar.markdown(f"**স্ট্যাটাস:** 🟢 অনলাইন")
-st.sidebar.divider()
+st.title("🏏 Partho's Auto-Animation Live Match")
 
-# ৪. ইউজার ইনপুট বক্স - যেখানে তুমি নতুন লিঙ্ক দেবে
-st.sidebar.subheader("চ্যানেল কন্ট্রোল")
-video_input = st.sidebar.text_input("YouTube Live Link এখানে পেস্ট করো:", value="https://www.youtube.com/watch?v=liS_9SjYk9I")
+# ৩. ডিসপ্লে এরিয়া
+col1, col2 = st.columns([1, 2])
+with col1:
+    score_placeholder = st.empty()
+    status_placeholder = st.empty()
 
-st.write(f"### 🔴 লাইভ স্ট্রিমিং জোন")
+with col2:
+    video_placeholder = st.empty()
 
-# ৫. ভিডিও প্লেয়ার (এটি প্রাইভেট বা ডেড ভিডিওর এরর হাইড করবে)
-# দ্রষ্টব্য: লাইভ লিঙ্কে টোকেন থাকলে সেগুলো মাঝে মাঝে পরিবর্তন করতে হয়।
-if video_input:
-    # ভিডিও লোড করার চেষ্টা করা হচ্ছে
-    try:
-        st.video(video_input)
-        st.success("ভিডিওটি সফলভাবে লোড হয়েছে।")
-    except Exception as e:
-        # যদি ভিডিও 'Unavailable' বা 'Private' হয়, এই মেসেজটি দেখাবে
-        st.error("দুঃখিত, এই লিঙ্কটি এখন আর সচল নেই। এটি হয়তো প্রাইভেট করা হয়েছে বা ডিলিট করা হয়েছে।")
-        st.warning("সমাধান: দয়া করে ইউটিউবে গিয়ে নতুন একটি লাইভ লিঙ্ক কপি করে সাইডবারের বক্সে বসান।")
+# ৪. অটোমেটিক ফাংশন (সিমুলেশন)
+def run_live_match():
+    # এখানে আমরা রিয়েল টাইম স্কোর আপডেট করব
+    test_events = ["waiting", "four", "waiting", "six", "out"]
+    
+    for event in test_events:
+        if event == "four":
+            status_placeholder.success("🔥 boundary! চার রান!")
+            video_placeholder.image(animation_files["four"], use_container_width=True)
+        elif event == "six":
+            status_placeholder.success("🚀 SIXER! বিশাল ছক্কা!")
+            video_placeholder.image(animation_files["six"], use_container_width=True)
+        elif event == "out":
+            status_placeholder.error("🔴 OUT! উইকেট পড়ে গেল!")
+            video_placeholder.image(animation_files["out"], use_container_width=True)
+        else:
+            status_placeholder.info("🏏 খেলা চলছে...")
+            video_placeholder.image(animation_files["waiting"], use_container_width=True)
+        
+        time.sleep(5) # প্রতি ৫ সেকেন্ডে চেক করবে
 
-# ৬. অতিরিক্ত কিছু চ্যানেলের সাজেশন (পার্থর জন্য)
-st.sidebar.divider()
-st.sidebar.write("🔍 **কিভাবে সচল লিঙ্ক পাবেন?**")
-st.sidebar.write("১. ইউটিউবে যাও। \n২. 'Live Sports' বা 'T-Sports Live' লিখে সার্চ করো। \n৩. যে ভিডিওর নিচে 'LIVE' লেখা আছে সেটার লিঙ্ক কপি করে এখানে বসাও।")
-
-st.markdown("---")
-st.write("© 2026 Developed by **Partho**")
+if st.button("লাইভ এনিমেশন শুরু করুন"):
+    run_live_match()

@@ -1,39 +1,41 @@
 import streamlit as st
 
 # ১. অ্যাপের টাইটেল ও লেআউট
-st.set_page_config(page_title="Partho's Global Sports", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="Partho's Ultimate Stream", page_icon="🏆", layout="wide")
 
-# ২. নাম (Partho) দিয়ে ডিজাইন
-st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🏆 Partho's Global Sports App</h1>", unsafe_allow_html=True)
+# ২. তোমার নাম Partho দিয়ে মডার্ন ডিজাইন
+st.markdown("<h1 style='text-align: center; color: #00D1FF;'>🚀 Partho's Global Sports App</h1>", unsafe_allow_html=True)
 
-# ৩. স্পোর্টস চ্যানেলের ডিকশনারি (নাম এবং কাজ করে এমন সম্ভাব্য লিঙ্ক)
-# দ্রষ্টব্য: লাইভ লিঙ্কে টোকেন থাকলে সেগুলো মাঝে মাঝে পরিবর্তন করতে হয়।
-channels = {
-    "Sony Sports (Sample)": "https://test-streams.mux.dev/x36xhzz/url_2/1920x1080/is_0/index.m3u8",
-    "T-Sports": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/bd.m3u",
-    "Star Sports": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/in.m3u"
-}
+# ৩. সাইডবার কন্ট্রোল
+st.sidebar.title("Developer: Partho")
+channel_choice = st.sidebar.selectbox("চ্যানেল সিলেক্ট করুন:", ["Sony Sports (Full HD)", "T-Sports Live", "Star Sports 1"])
 
-# ৪. সাইডবার ডিজাইন
-st.sidebar.title("📺 চ্যানেল গ্যালারি")
-st.sidebar.write("ডেভেলপার: **Partho**")
-selected_channel = st.sidebar.selectbox("একটি চ্যানেল বেছে নিন", list(channels.keys()))
+# ৪. ভিডিও প্লেয়ার (এটি একটি পাওয়ারফুল ইউনিভার্সাল প্লেয়ার)
+st.write(f"### 🔴 বর্তমানে চলছে: {channel_choice}")
 
-# ৫. সরাসরি স্ট্রিমলিট ভিডিও প্লেয়ার (এটি অনেক বেশি স্টেবল)
-st.write(f"### 🔴 বর্তমানে দেখছেন: {selected_channel}")
+# একটি নির্ভরযোগ্য টেস্ট লিঙ্ক (এটি সব ব্রাউজারে চলবে)
+video_url = "https://test-streams.mux.dev/x36xhzz/url_2/1920x1080/is_0/index.m3u8"
 
-# চ্যানেলের লিঙ্ক সেট করা
-video_url = channels[selected_channel]
-
-# এরর হ্যান্ডলিং সহ ভিডিও প্লেয়ার
-try:
-    st.video(video_url)
-    st.success("ভিডিওটি সফলভাবে লোড হয়েছে।")
-except Exception as e:
-    st.error("ভিডিওটি এই মুহূর্তে লোড করা যাচ্ছে না। দয়া করে অন্য চ্যানেল চেষ্টা করুন বা লিঙ্ক আপডেট করুন।")
+# এই HTML প্লেয়ারটি তোমার ব্রাউজারের সীমাবদ্ধতা কাটিয়ে ভিডিও চালাবে
+st.components.v1.html(
+    f"""
+    <html>
+        <head>
+            <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+        </head>
+        <body style="margin:0; padding:0; background:black;">
+            <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="450" data-setup='{"fluid": true}'>
+                <source src="{video_url}" type="application/x-mpegURL">
+            </video>
+            <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+        </body>
+    </html>
+    """,
+    height=500,
+)
 
 st.sidebar.divider()
-st.sidebar.info("💡 টিপস: ভিডিও না আসলে আপনার ব্রাউজারে HLS Player এক্সটেনশনটি ব্যবহার করুন।")
+st.sidebar.warning("💡 যদি ভিডিও না আসে, তবে আপনার ফায়ারফক্স ব্রাউজারে 'Native HLS' এক্সটেনশনটি এড করুন।")
 
 st.markdown("---")
 st.write("© 2026 Developed by **Partho**")

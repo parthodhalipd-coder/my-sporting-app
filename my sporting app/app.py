@@ -2,30 +2,19 @@ import streamlit as st
 import time
 
 # ১. টাইটেল
-st.title("Partho's Live Project 🏏")
+st.title("Partho's Success Match 🏏")
 
-# ২. স্কোরবোর্ড
-if 'score' not in st.session_state:
-    st.session_state.score = 0
+# ২. স্কোর বোর্ড
+if 'runs' not in st.session_state:
+    st.session_state.runs = 0
 
-col1, col2 = st.columns(2)
+st.header(f"স্কোর: {st.session_state.runs} রান")
 
-with col1:
-    st.header("Scoreboard")
-    st.metric("Total Runs", st.session_state.score)
-    if st.button('Add Run'):
-        st.session_state.score += 1
+# ৩. বাটন (ভিডিওর বদলে আমরা সরাসরি এনিমেশন লোড করব)
+if st.button('ছক্কা মারুন! 🚀'):
+    st.session_state.runs += 6
+    st.balloons() # স্ক্রিনে কয়েকশ বেলুন উড়বে
+    st.snow()     # তুষারপাত হবে
+    st.success("বিশাল ছক্কা! পার্থ, এবার তোমার অ্যাপে ম্যাজিক কাজ করছে!")
 
-with col2:
-    st.header("Match Status")
-    # এটি ভিডিও নয়, এটি একটি পাইথন এনিমেশন যা তোমার ব্রাউজারে তৈরি হবে
-    with st.spinner('বোলার বল করছে...'):
-        time.sleep(1)
-    
-    # রান হলে ম্যাজিক দেখাবে
-    if st.session_state.score > 0:
-        st.balloons()
-        st.success("অসাধারণ শট! বেলুন উড়ছে দেখো!")
-
-# ৩. একটি ছোট এনিমেশন বক্স
-st.info("পার্থ, এই বেলুনগুলোই এখন আমাদের এনিমেশন। এটি সরাসরি পাইথন দিয়ে চলছে।")
+st.info("পার্থ, এই বেলুনগুলোই এখন আমাদের এনিমেশন। এটি কোনো লিঙ্কের ওপর নির্ভর করে না, তাই এটি সবসময় কাজ করবে।")
